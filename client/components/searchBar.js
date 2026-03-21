@@ -4,6 +4,12 @@ const SearchBar = (() => {
 	const input = document.querySelector('.search-bar__input');
 	let debounceTimer = null;
 	let isSearching = false;
+	let currentDir = '';
+
+	// Listen for directory changes to update currentDir
+	document.addEventListener('navigate', (e) => {
+		currentDir = e.detail.path || '';
+	});
 
 	//  Debounced search
 	function handleInput(e) {
@@ -25,7 +31,9 @@ const SearchBar = (() => {
 		document.dispatchEvent(new CustomEvent('search:start', { detail: { q } }));
 
 		try {
-			const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+			const res = await fetch(
+				`/api/files/search?dir=${encodeURIComponent(currentDir)}&q=${encodeURIComponent(q)}`,
+			);
 			const data = await res.json();
 			document.dispatchEvent(
 				new CustomEvent('search:results', {
@@ -57,6 +65,18 @@ const SearchBar = (() => {
 
 	//  Bind
 	input?.addEventListener('input', handleInput);
+
+	// Listen for search:results and render them
+	document.addEventListener('search:results', (e) => {
+		FileList.renderSearchResults(e.detail.results, e.detail.q);
+	});
+
+	// Listen for search:clear to reload directory
+	document.addEventListener('search:clear', () => {
+		document.dispatchEvent(
+			new CustomEvent('dir:load', { detail: { path: currentDir } }),
+		);
+	});
 
 	return { focus: () => input?.focus() };
 })();

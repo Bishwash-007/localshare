@@ -87,17 +87,23 @@ export async function upload(req, res) {
 
 // Search files/folders (GET /api/files/search?dir=...&q=...)
 export async function search(req, res) {
-	const { dir, q } = req.query;
+	const dir =
+		req.query.dir || '/data/data/com.termux/files/home/storage/shared';
+	const q = req.query.q || '';
 	try {
 		const entries = await fs.readdir(dir, { withFileTypes: true });
-		const files = entries
-			.filter((entry) => entry.name.toLowerCase().includes(q.toLowerCase()))
+		const results = entries
+			.filter(
+				(entry) =>
+					!entry.name.startsWith('.') &&
+					entry.name.toLowerCase().includes(q.toLowerCase()),
+			)
 			.map((entry) => ({
 				name: entry.name,
 				isDirectory: entry.isDirectory(),
 				isFile: entry.isFile(),
 			}));
-		res.json({ path: dir, files });
+		res.json({ path: dir, results });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}

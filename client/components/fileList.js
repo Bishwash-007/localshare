@@ -262,7 +262,7 @@ const FileList = (() => {
 	function openItem(i, card) {
 		const item = currentItems[i];
 		if (!item) return;
-		if (item.is_dir) {
+		if (item.isDirectory) {
 			const newPath =
 				item.full_path ||
 				(currentPath ? currentPath + '/' + item.name : item.name);
@@ -270,7 +270,15 @@ const FileList = (() => {
 				new CustomEvent('navigate', { detail: { path: newPath } }),
 			);
 		} else {
-			PreviewModal.open({ ...item, path: item.full_path || buildPath(item) });
+			// Download file on open
+			const filePath = item.full_path || buildPath(item);
+			const downloadUrl = `/api/files/download?path=${encodeURIComponent(filePath)}`;
+			const a = document.createElement('a');
+			a.href = downloadUrl;
+			a.download = item.name;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
 		}
 	}
 
