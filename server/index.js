@@ -7,11 +7,18 @@ import apiRouter from './api/index.js';
 
 const app = express();
 
-const ipAddress =
-	os
-		.networkInterfaces()
-		.en0?.find((iface) => iface.family === 'IPv4' && !iface.internal)
-		?.address || 'localhost';
+function getLocalIp() {
+  const nets = os.networkInterfaces();
+  for (const name of Object.keys(nets)) {
+    for (const net of nets[name] || []) {
+      if (net.family === 'IPv4' && !net.internal) {
+        return net.address;
+      }
+    }
+  }
+  return 'localhost';
+}
+const ipAddress = getLocalIp();
 console.log(`Server IP address: ${ipAddress}`);
 // Serve static frontend
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
