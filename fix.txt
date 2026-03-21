@@ -1,5 +1,14 @@
-OKay breadcrumbs isn't working properly
-Explorer isn't working it says ENOENT: no such file or directory, scandir 'Videos'
+if the current directory is /data/dta/com.termux/files/home/localshare then 
+/data/dta/com.termux/files/home/storage contains all the folder like audiobooks, downloads, mdeia-0, dcim , media-1, external-0, external-1, movies pictures, podcasts, documents , and shared , and shared folder contains other folders and files .  I want to show documents, dcim, pictures, movies, All on the Explorer Menu.
 
-I'm getting .files too 
-There's no Preview for the images and stuffs
+Under Storage . I want to add these externa-0, external-1, shared on the Storage Section Make sure this Navigation works
+
+Also make sure the breadcrumbs Navigation works
+
+
+and on the content area Initially list the files and folders of Shared folder
+
+and accordingly to the navigation we'll render those files and folder, 
+
+
+NOTE FIX THIS ANYHOW: Nested Folder Navigation, 

@@ -12,7 +12,6 @@
 	</head>
 	<body>
 		<div id="app">
-
 			<!-- ===== HEADER ===== -->
 			<header id="app-header" class="app-header">
 				<div class="app-header__brand">
@@ -46,32 +45,38 @@
 
 			<main id="app-main">
 				<div class="layout-grid">
-
 					<!-- ===== SIDEBAR ===== -->
 					<aside id="sidebar" class="sidebar">
 						<div class="sidebar__section">
 							<span class="sidebar__section-label">Explorer</span>
 							<nav id="folders-nav" class="sidebar__nav">
 								<ul class="sidebar__list" id="folders-list">
-									<li class="sidebar__item sidebar__item--active">
-										<i class="ph ph-folder sidebar__item-icon sidebar__item-icon--folder"></i>
+									<li
+										class="sidebar__item sidebar__item--active"
+										data-path="Documents"
+									>
+										<i
+											class="ph ph-folder sidebar__item-icon sidebar__item-icon--folder"
+										></i>
 										<span class="sidebar__item-label">Documents</span>
 									</li>
-									<li class="sidebar__item">
-										<i class="ph ph-music-note sidebar__item-icon sidebar__item-icon--music"></i>
-										<span class="sidebar__item-label">Music</span>
-									</li>
-									<li class="sidebar__item">
-										<i class="ph ph-film-strip sidebar__item-icon sidebar__item-icon--video"></i>
-										<span class="sidebar__item-label">Videos</span>
-									</li>
-									<li class="sidebar__item">
-										<i class="ph ph-image sidebar__item-icon sidebar__item-icon--image"></i>
+									<li class="sidebar__item" data-path="DCIM">
+										<i
+											class="ph ph-image sidebar__item-icon sidebar__item-icon--image"
+										></i>
 										<span class="sidebar__item-label">DCIM</span>
 									</li>
-									<li class="sidebar__item">
-										<i class="ph ph-download sidebar__item-icon sidebar__item-icon--download"></i>
-										<span class="sidebar__item-label">Downloads</span>
+									<li class="sidebar__item" data-path="Pictures">
+										<i
+											class="ph ph-image-square sidebar__item-icon sidebar__item-icon--image"
+										></i>
+										<span class="sidebar__item-label">Pictures</span>
+									</li>
+									<li class="sidebar__item" data-path="Movies">
+										<i
+											class="ph ph-film-strip sidebar__item-icon sidebar__item-icon--video"
+										></i>
+										<span class="sidebar__item-label">Movies</span>
 									</li>
 								</ul>
 							</nav>
@@ -81,13 +86,23 @@
 							<span class="sidebar__section-label">Storage</span>
 							<nav id="storage-nav" class="sidebar__nav">
 								<ul class="sidebar__list" id="storage-list">
-									<li class="sidebar__item">
-										<i class="ph ph-device-mobile sidebar__item-icon sidebar__item-icon--device"></i>
-										<span class="sidebar__item-label">Device</span>
+									<li class="sidebar__item" data-path="external-0">
+										<i
+											class="ph ph-memory sidebar__item-icon sidebar__item-icon--sdcard"
+										></i>
+										<span class="sidebar__item-label">external-0</span>
 									</li>
-									<li class="sidebar__item">
-										<i class="ph ph-memory sidebar__item-icon sidebar__item-icon--sdcard"></i>
-										<span class="sidebar__item-label">External Card</span>
+									<li class="sidebar__item" data-path="external-1">
+										<i
+											class="ph ph-memory sidebar__item-icon sidebar__item-icon--sdcard"
+										></i>
+										<span class="sidebar__item-label">external-1</span>
+									</li>
+									<li class="sidebar__item" data-path="shared">
+										<i
+											class="ph ph-share-network sidebar__item-icon sidebar__item-icon--folder"
+										></i>
+										<span class="sidebar__item-label">shared</span>
 									</li>
 								</ul>
 								<div class="storage-meter">
@@ -105,20 +120,22 @@
 
 					<!-- ===== CONTENT AREA ===== -->
 					<section class="content-area">
-
 						<nav class="breadcrumb" id="breadcrumbs">
 							<a href="#" class="breadcrumb__item breadcrumb__item--link">
 								<i class="ph ph-house breadcrumb__icon"></i>
 								<span>Home</span>
 							</a>
 							<i class="ph ph-caret-right breadcrumb__separator"></i>
-							<a href="#" class="breadcrumb__item breadcrumb__item--link">Documents</a>
+							<a href="#" class="breadcrumb__item breadcrumb__item--link"
+								>Documents</a
+							>
 							<i class="ph ph-caret-right breadcrumb__separator"></i>
-							<span class="breadcrumb__item breadcrumb__item--current">Photos</span>
+							<span class="breadcrumb__item breadcrumb__item--current"
+								>Photos</span
+							>
 						</nav>
 
 						<div class="file-grid" id="file-list">
-
 							<div class="file-card file-card--folder" tabindex="0">
 								<i class="ph ph-folder file-card__icon"></i>
 								<div class="file-card__meta">
@@ -188,7 +205,6 @@
 									<i class="ph ph-dots-three"></i>
 								</button>
 							</div>
-
 						</div>
 
 						<div id="preview-modal" class="modal modal--hidden">
@@ -196,14 +212,17 @@
 							<div class="modal__content" role="dialog" aria-modal="true">
 								<div class="modal__header">
 									<span class="modal__title">File Preview</span>
-									<button class="modal__close-btn" id="close-preview" aria-label="Close preview">
+									<button
+										class="modal__close-btn"
+										id="close-preview"
+										aria-label="Close preview"
+									>
 										<i class="ph ph-x"></i>
 									</button>
 								</div>
 								<div class="modal__body" id="preview-content"></div>
 							</div>
 						</div>
-
 					</section>
 				</div>
 			</main>
@@ -215,7 +234,10 @@
 						<i class="ph ph-files"></i> 6 items
 					</span>
 					<span class="app-footer__divider"></span>
-					<span id="connection-status" class="app-footer__stat app-footer__stat--online">
+					<span
+						id="connection-status"
+						class="app-footer__stat app-footer__stat--online"
+					>
 						<i class="ph ph-wifi-high"></i> Connected
 					</span>
 					<span class="app-footer__divider"></span>
@@ -224,7 +246,6 @@
 					</span>
 				</div>
 			</footer>
-
 		</div>
 
 		<script src="components/previewModal.js"></script>

@@ -4,23 +4,26 @@
 
 //  Sidebar Nav ─
 const SidebarNav = (() => {
-	const items = document.querySelectorAll('.folder');
-	// Map sidebar labels to paths (adjust to match your BASE_DIR structure)
+	// All sidebar items (Explorer and Storage)
+	const items = document.querySelectorAll('.sidebar__item');
+
+	// Map sidebar data-path to Termux storage subfolders
 	const PATH_MAP = {
-		Documents: 'Documents',
-		Music: 'Music',
-		Videos: 'Videos',
-		DCIM: 'DCIM',
-		Downloads: 'Downloads',
-		Device: '',
-		'External Card': '',
+		Documents: '/data/data/com.termux/files/home/storage/Documents',
+		DCIM: '/data/data/com.termux/files/home/storage/DCIM',
+		Pictures: '/data/data/com.termux/files/home/storage/Pictures',
+		Movies: '/data/data/com.termux/files/home/storage/Movies',
+		'external-0': '/data/data/com.termux/files/home/storage/external-0',
+		'external-1': '/data/data/com.termux/files/home/storage/external-1',
+		shared: '/data/data/com.termux/files/home/storage/shared',
 	};
 
 	function init() {
 		items.forEach((item) => {
-			const label = item.textContent.trim();
+			const dataPath = item.getAttribute('data-path');
+			if (!dataPath) return;
 			item.addEventListener('click', async () => {
-				const path = PATH_MAP[label] ?? '';
+				const path = PATH_MAP[dataPath] || '';
 				// Check if folder exists before navigating
 				try {
 					const res = await fetch(`/api/files?dir=${encodeURIComponent(path)}`);
@@ -41,9 +44,15 @@ const SidebarNav = (() => {
 	function setActive(path) {
 		items.forEach((item) => {
 			item.classList.remove('sidebar__item--active');
-			const label = item.textContent.trim();
-			const itemPath = PATH_MAP[label] ?? null;
-			if (itemPath === path || (path === '' && label === 'Device')) {
+			const dataPath = item.getAttribute('data-path');
+			if (!dataPath) return;
+			const mapped = PATH_MAP[dataPath] || '';
+			// Highlight if path matches or is inside the mapped folder
+			if (path && (path === mapped || path.startsWith(mapped + '/'))) {
+				item.classList.add('sidebar__item--active');
+			}
+			// Special case: highlight shared on initial load
+			if (!path && dataPath === 'shared') {
 				item.classList.add('sidebar__item--active');
 			}
 		});
@@ -252,11 +261,14 @@ function updateConnectionStatus(online) {
 }
 
 //  Init
+
+// On startup, show shared folder contents by default
 (function init() {
 	loadStorageMeter();
-	loadDirectory(''); // load root on startup
-	SidebarNav.setActive(''); // highlight "Device" by default
-
+	// Show shared folder on load
+	const sharedPath = '/data/data/com.termux/files/home/storage/shared';
+	loadDirectory(sharedPath);
+	SidebarNav.setActive(sharedPath);
 	// Refresh storage meter every 30s
 	setInterval(loadStorageMeter, 30_000);
 })();
