@@ -1,11 +1,18 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import os from 'os';
 
 import apiRouter from './api/index.js';
 
 const app = express();
 
+const ipAddress =
+	os
+		.networkInterfaces()
+		.en0?.find((iface) => iface.family === 'IPv4' && !iface.internal)
+		?.address || 'localhost';
+console.log(`Server IP address: ${ipAddress}`);
 // Serve static frontend
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, '../client')));
