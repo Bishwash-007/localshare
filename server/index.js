@@ -1,0 +1,20 @@
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+import apiRouter from './api/index.js';
+
+const app = express();
+
+// Serve static frontend
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+app.use(express.static(path.join(__dirname, '../client')));
+
+// API routes
+app.use('/api', apiRouter);
+
+// Listen on all interfaces for Termux/mobile access
+const PORT = 8080;
+app.listen(PORT, '0.0.0.0', () => {
+	console.log(`Server running on http://0.0.0.0:${PORT}`);
+});

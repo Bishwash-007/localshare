@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>LocalShare</title>
+		<link rel="stylesheet" href="styles.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/phosphor-icons@1.4.2/src/css/icons.min.css"
+		/>
+	</head>
+	<body>
+		<div id="app">
+
+			<!-- ===== HEADER ===== -->
+			<header id="app-header" class="app-header">
+				<div class="app-header__brand">
+					<i class="ph ph-share-network app-header__logo-icon"></i>
+					<h3 class="app-header__title">LocalShare</h3>
+				</div>
+
+				<div id="search-bar" class="search-bar">
+					<i class="ph ph-magnifying-glass search-bar__icon"></i>
+					<input
+						type="text"
+						class="search-bar__input"
+						placeholder="Search files and folders..."
+					/>
+					<kbd class="search-bar__kbd">⌘K</kbd>
+				</div>
+
+				<div class="app-header__actions">
+					<button class="icon-btn" title="New Folder">
+						<i class="ph ph-folder-plus"></i>
+					</button>
+					<div class="app-header__divider"></div>
+					<button class="icon-btn icon-btn--active" title="Grid View">
+						<i class="ph ph-squares-four"></i>
+					</button>
+					<button class="icon-btn" title="List View">
+						<i class="ph ph-list"></i>
+					</button>
+				</div>
+			</header>
+
+			<main id="app-main">
+				<div class="layout-grid">
+
+					<!-- ===== SIDEBAR ===== -->
+					<aside id="sidebar" class="sidebar">
+						<div class="sidebar__section">
+							<span class="sidebar__section-label">Explorer</span>
+							<nav id="folders-nav" class="sidebar__nav">
+								<ul class="sidebar__list" id="folders-list">
+									<li class="sidebar__item sidebar__item--active">
+										<i class="ph ph-folder sidebar__item-icon sidebar__item-icon--folder"></i>
+										<span class="sidebar__item-label">Documents</span>
+									</li>
+									<li class="sidebar__item">
+										<i class="ph ph-music-note sidebar__item-icon sidebar__item-icon--music"></i>
+										<span class="sidebar__item-label">Music</span>
+									</li>
+									<li class="sidebar__item">
+										<i class="ph ph-film-strip sidebar__item-icon sidebar__item-icon--video"></i>
+										<span class="sidebar__item-label">Videos</span>
+									</li>
+									<li class="sidebar__item">
+										<i class="ph ph-image sidebar__item-icon sidebar__item-icon--image"></i>
+										<span class="sidebar__item-label">DCIM</span>
+									</li>
+									<li class="sidebar__item">
+										<i class="ph ph-download sidebar__item-icon sidebar__item-icon--download"></i>
+										<span class="sidebar__item-label">Downloads</span>
+									</li>
+								</ul>
+							</nav>
+						</div>
+
+						<div class="sidebar__section">
+							<span class="sidebar__section-label">Storage</span>
+							<nav id="storage-nav" class="sidebar__nav">
+								<ul class="sidebar__list" id="storage-list">
+									<li class="sidebar__item">
+										<i class="ph ph-device-mobile sidebar__item-icon sidebar__item-icon--device"></i>
+										<span class="sidebar__item-label">Device</span>
+									</li>
+									<li class="sidebar__item">
+										<i class="ph ph-memory sidebar__item-icon sidebar__item-icon--sdcard"></i>
+										<span class="sidebar__item-label">External Card</span>
+									</li>
+								</ul>
+								<div class="storage-meter">
+									<div class="storage-meter__bar">
+										<div class="storage-meter__fill" style="width: 62%"></div>
+									</div>
+									<div class="storage-meter__labels">
+										<span>15.5 GB used</span>
+										<span>25 GB</span>
+									</div>
+								</div>
+							</nav>
+						</div>
+					</aside>
+
+					<!-- ===== CONTENT AREA ===== -->
+					<section class="content-area">
+
+						<nav class="breadcrumb" id="breadcrumbs">
+							<a href="#" class="breadcrumb__item breadcrumb__item--link">
+								<i class="ph ph-house breadcrumb__icon"></i>
+								<span>Home</span>
+							</a>
+							<i class="ph ph-caret-right breadcrumb__separator"></i>
+							<a href="#" class="breadcrumb__item breadcrumb__item--link">Documents</a>
+							<i class="ph ph-caret-right breadcrumb__separator"></i>
+							<span class="breadcrumb__item breadcrumb__item--current">Photos</span>
+						</nav>
+
+						<div class="file-grid" id="file-list">
+
+							<div class="file-card file-card--folder" tabindex="0">
+								<i class="ph ph-folder file-card__icon"></i>
+								<div class="file-card__meta">
+									<span class="file-card__name">Vacation</span>
+									<span class="file-card__detail">14 items</span>
+								</div>
+								<button class="file-card__menu-btn" title="More options">
+									<i class="ph ph-dots-three"></i>
+								</button>
+							</div>
+
+							<div class="file-card file-card--image" tabindex="0">
+								<img
+									src="https://placehold.co/80x80/94e2d5/1e1e2e?text=IMG"
+									alt="beach preview"
+									class="file-card__thumbnail"
+								/>
+								<div class="file-card__meta">
+									<span class="file-card__name">beach.png</span>
+									<span class="file-card__detail">2.4 MB</span>
+								</div>
+								<button class="file-card__menu-btn" title="More options">
+									<i class="ph ph-dots-three"></i>
+								</button>
+							</div>
+
+							<div class="file-card file-card--doc" tabindex="0">
+								<i class="ph ph-file-text file-card__icon"></i>
+								<div class="file-card__meta">
+									<span class="file-card__name">notes.txt</span>
+									<span class="file-card__detail">12 KB</span>
+								</div>
+								<button class="file-card__menu-btn" title="More options">
+									<i class="ph ph-dots-three"></i>
+								</button>
+							</div>
+
+							<div class="file-card file-card--video" tabindex="0">
+								<i class="ph ph-film-strip file-card__icon"></i>
+								<div class="file-card__meta">
+									<span class="file-card__name">movie.mp4</span>
+									<span class="file-card__detail">1.2 GB</span>
+								</div>
+								<button class="file-card__menu-btn" title="More options">
+									<i class="ph ph-dots-three"></i>
+								</button>
+							</div>
+
+							<div class="file-card file-card--audio" tabindex="0">
+								<i class="ph ph-music-note file-card__icon"></i>
+								<div class="file-card__meta">
+									<span class="file-card__name">track.mp3</span>
+									<span class="file-card__detail">8.1 MB</span>
+								</div>
+								<button class="file-card__menu-btn" title="More options">
+									<i class="ph ph-dots-three"></i>
+								</button>
+							</div>
+
+							<div class="file-card file-card--archive" tabindex="0">
+								<i class="ph ph-file-zip file-card__icon"></i>
+								<div class="file-card__meta">
+									<span class="file-card__name">backup.zip</span>
+									<span class="file-card__detail">340 MB</span>
+								</div>
+								<button class="file-card__menu-btn" title="More options">
+									<i class="ph ph-dots-three"></i>
+								</button>
+							</div>
+
+						</div>
+
+						<div id="preview-modal" class="modal modal--hidden">
+							<div class="modal__backdrop" id="modal-backdrop"></div>
+							<div class="modal__content" role="dialog" aria-modal="true">
+								<div class="modal__header">
+									<span class="modal__title">File Preview</span>
+									<button class="modal__close-btn" id="close-preview" aria-label="Close preview">
+										<i class="ph ph-x"></i>
+									</button>
+								</div>
+								<div class="modal__body" id="preview-content"></div>
+							</div>
+						</div>
+
+					</section>
+				</div>
+			</main>
+
+			<!-- ===== FOOTER ===== -->
+			<footer id="app-footer" class="app-footer">
+				<div class="app-footer__status">
+					<span id="item-count" class="app-footer__stat">
+						<i class="ph ph-files"></i> 6 items
+					</span>
+					<span class="app-footer__divider"></span>
+					<span id="connection-status" class="app-footer__stat app-footer__stat--online">
+						<i class="ph ph-wifi-high"></i> Connected
+					</span>
+					<span class="app-footer__divider"></span>
+					<span class="app-footer__stat">
+						<i class="ph ph-clock"></i> Last synced: just now
+					</span>
+				</div>
+			</footer>
+
+		</div>
+
+		<script src="components/previewModal.js"></script>
+		<script src="components/breadcrumbs.js"></script>
+		<script src="components/searchBar.js"></script>
+		<script src="components/fileList.js"></script>
+		<script src="scripts.js"></script>
+	</body>
+</html>
