@@ -4,16 +4,19 @@ export async function storage(req, res) {
 	try {
 		// Use 'df' command for cross-platform disk usage (works in Termux)
 		const { exec } = await import('child_process');
-		exec('df -k /data/data/com.termux/files/home', (err, stdout) => {
-			if (err) return res.status(500).json({ error: err.message });
-			const lines = stdout.trim().split('\n');
-			if (lines.length < 2)
-				return res.status(500).json({ error: 'No disk info' });
-			const parts = lines[1].split(/\s+/);
-			const total = parseInt(parts[1], 10) * 1024;
-			const used = parseInt(parts[2], 10) * 1024;
-			res.json({ total, used });
-		});
+		exec(
+			'df -k /data/data/com.termux/files/home/storage/shared',
+			(err, stdout) => {
+				if (err) return res.status(500).json({ error: err.message });
+				const lines = stdout.trim().split('\n');
+				if (lines.length < 2)
+					return res.status(500).json({ error: 'No disk info' });
+				const parts = lines[1].split(/\s+/);
+				const total = parseInt(parts[1], 10) * 1024;
+				const used = parseInt(parts[2], 10) * 1024;
+				res.json({ total, used });
+			},
+		);
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
@@ -53,8 +56,11 @@ import path from 'path';
 
 // List directory contents (GET /api/files?dir=/some/path)
 export async function listDirectory(req, res) {
-	const dir =
-		req.query.dir || '/data/data/com.termux/files/home/storage/shared';
+	// Use /storage as root if dir is empty or "/"
+	let dir = req.query.dir;
+	if (!dir || dir === '/') {
+		dir = '/data/data/com.termux/files/home/storage';
+	}
 	try {
 		const entries = await fs.readdir(dir, { withFileTypes: true });
 		const files = entries
@@ -136,8 +142,10 @@ export async function upload(req, res) {
 
 // Search files/folders (GET /api/files/search?dir=...&q=...)
 export async function search(req, res) {
-	const dir =
-		req.query.dir || '/data/data/com.termux/files/home/storage/shared';
+	let dir = req.query.dir;
+	if (!dir || dir === '/') {
+		dir = '/data/data/com.termux/files/home/storage';
+	}
 	const q = req.query.q || '';
 	try {
 		const entries = await fs.readdir(dir, { withFileTypes: true });
