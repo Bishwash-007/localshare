@@ -49,7 +49,8 @@ const FileList = (() => {
 	};
 
 	function getIcon(item) {
-		if (item.is_dir) return { ph: 'ph-folder', cardClass: 'file-card--folder' };
+		if (item.isDirectory)
+			return { ph: 'ph-folder', cardClass: 'file-card--folder' };
 		const ext = item.name.split('.').pop().toLowerCase();
 		const entry = EXT_ICON[ext];
 		if (!entry) return { ph: 'ph-file', cardClass: 'file-card--doc' };
@@ -93,11 +94,11 @@ const FileList = (() => {
 		// image thumbnail?
 		const ext = item.name.split('.').pop().toLowerCase();
 		const isImage =
-			['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext) && !item.is_dir;
+			['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext) && !item.isDirectory;
 		const iconOrThumb = isImage
-			? `<img src="/api/download?path=${encodeURIComponent((currentPath ? currentPath + '/' : '') + item.name)}"
-              alt="${esc(item.name)}" class="file-card__thumbnail"
-              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+			? `<img src="/api/files/download?path=${encodeURIComponent((currentPath ? currentPath + '/' : '') + item.name)}"
+							alt="${esc(item.name)}" class="file-card__thumbnail"
+							onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />"
          <i class="ph ${ph} file-card__icon" style="display:none;"></i>`
 			: `<i class="ph ${ph} file-card__icon"></i>`;
 
@@ -181,15 +182,38 @@ const FileList = (() => {
 				selectCard(card, i);
 			});
 
-			// Double click → open
+			// Double click → open (navigate into folder)
 			card.addEventListener('dblclick', (e) => {
 				if (e.target.closest('.file-card__menu-btn')) return;
-				openItem(i, card);
+				const item = currentItems[i];
+				if (item.isDirectory) {
+					// Build new path
+					const newPath = currentPath
+						? currentPath + '/' + item.name
+						: item.name;
+					document.dispatchEvent(
+						new CustomEvent('navigate', { detail: { path: newPath } }),
+					);
+				} else {
+					openItem(i, card);
+				}
 			});
 
 			// Enter key
 			card.addEventListener('keydown', (e) => {
-				if (e.key === 'Enter') openItem(i, card);
+				if (e.key === 'Enter') {
+					const item = currentItems[i];
+					if (item.isDirectory) {
+						const newPath = currentPath
+							? currentPath + '/' + item.name
+							: item.name;
+						document.dispatchEvent(
+							new CustomEvent('navigate', { detail: { path: newPath } }),
+						);
+					} else {
+						openItem(i, card);
+					}
+				}
 				if (e.key === ' ') {
 					e.preventDefault();
 					selectCard(card, i);

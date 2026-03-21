@@ -4,8 +4,7 @@
 
 //  Sidebar Nav ─
 const SidebarNav = (() => {
-	const items = document.querySelectorAll('.sidebar__item');
-
+	const items = document.querySelectorAll('.folder');
 	// Map sidebar labels to paths (adjust to match your BASE_DIR structure)
 	const PATH_MAP = {
 		Documents: 'Documents',
@@ -19,14 +18,22 @@ const SidebarNav = (() => {
 
 	function init() {
 		items.forEach((item) => {
-			const label = item
-				.querySelector('.sidebar__item-label')
-				?.textContent.trim();
-			item.addEventListener('click', () => {
+			const label = item.textContent.trim();
+			item.addEventListener('click', async () => {
 				const path = PATH_MAP[label] ?? '';
-				document.dispatchEvent(
-					new CustomEvent('navigate', { detail: { path } }),
-				);
+				// Check if folder exists before navigating
+				try {
+					const res = await fetch(`/api/files?dir=${encodeURIComponent(path)}`);
+					if (res.ok) {
+						document.dispatchEvent(
+							new CustomEvent('navigate', { detail: { path } }),
+						);
+					} else {
+						FileList.showToast('Folder not found', 'err');
+					}
+				} catch {
+					FileList.showToast('Folder not found', 'err');
+				}
 			});
 		});
 	}
@@ -34,9 +41,7 @@ const SidebarNav = (() => {
 	function setActive(path) {
 		items.forEach((item) => {
 			item.classList.remove('sidebar__item--active');
-			const label = item
-				.querySelector('.sidebar__item-label')
-				?.textContent.trim();
+			const label = item.textContent.trim();
 			const itemPath = PATH_MAP[label] ?? null;
 			if (itemPath === path || (path === '' && label === 'Device')) {
 				item.classList.add('sidebar__item--active');

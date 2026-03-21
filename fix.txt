@@ -1,0 +1,5 @@
+OKay breadcrumbs isn't working properly
+Explorer isn't working it says ENOENT: no such file or directory, scandir 'Videos'
+
+I'm getting .files too 
+There's no Preview for the images and stuffs

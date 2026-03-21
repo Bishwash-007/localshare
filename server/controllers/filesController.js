@@ -4,17 +4,24 @@ import path from 'path';
 
 // List directory contents (GET /api/files?dir=/some/path)
 export async function listDirectory(req, res) {
-	const dir = req.query.dir || '/data/data/com.termux/files/home/storage/shared';
+	const dir =
+		req.query.dir || '/data/data/com.termux/files/home/storage/shared';
 	try {
 		const entries = await fs.readdir(dir, { withFileTypes: true });
-		const files = entries.map((entry) => ({
-			name: entry.name,
-			isDirectory: entry.isDirectory(),
-			isFile: entry.isFile(),
-		}));
+		const files = entries
+			.filter((entry) => !entry.name.startsWith('.')) // Hide dotfiles
+			.map((entry) => ({
+				name: entry.name,
+				isDirectory: entry.isDirectory(),
+				isFile: entry.isFile(),
+			}));
 		res.json({ path: dir, files });
 	} catch (err) {
-		res.status(500).json({ error: err.message });
+		if (err.code === 'ENOENT') {
+			res.status(404).json({ error: 'Folder not found' });
+		} else {
+			res.status(500).json({ error: err.message });
+		}
 	}
 }
 
@@ -60,9 +67,9 @@ export async function rename(req, res) {
 	}
 }
 
-// Download file (GET /api/files/download?file=...)
+// Download file (GET /api/files/download?path=...)
 export async function download(req, res) {
-	const file = req.query.file;
+	const file = req.query.path;
 	if (!file) return res.status(400).json({ error: 'No file specified' });
 	try {
 		res.download(file);
