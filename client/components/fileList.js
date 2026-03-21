@@ -1,8 +1,5 @@
-// ============================================================
-// fileList.js
 // Renders the file grid, handles selection, context menu,
 // drag-and-drop upload, and coordinates with other components.
-// ============================================================
 
 const FileList = (() => {
 	const grid = document.getElementById('file-list');
@@ -95,11 +92,14 @@ const FileList = (() => {
 		const ext = item.name.split('.').pop().toLowerCase();
 		const isImage =
 			['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext) && !item.isDirectory;
+		const absPath =
+			item.full_path ||
+			(currentPath ? currentPath + '/' + item.name : item.name);
 		const iconOrThumb = isImage
-			? `<img src="/api/files/download?path=${encodeURIComponent((currentPath ? currentPath + '/' : '') + item.name)}"
+			? `<img src="/api/files/download?path=${encodeURIComponent(absPath)}"
 							alt="${esc(item.name)}" class="file-card__thumbnail"
 							onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />"
-         <i class="ph ${ph} file-card__icon" style="display:none;"></i>`
+				 <i class="ph ${ph} file-card__icon" style="display:none;"></i>`
 			: `<i class="ph ${ph} file-card__icon"></i>`;
 
 		return `
@@ -399,7 +399,8 @@ const FileList = (() => {
 	//  File actions (stubs — API calls written by you) ─
 
 	function downloadItem(item) {
-		window.location = `/api/download?path=${encodeURIComponent(buildPath(item))}`;
+		const absPath = item.full_path || buildPath(item);
+		window.location = `/api/files/download?path=${encodeURIComponent(absPath)}`;
 	}
 
 	function promptRename(item) {
