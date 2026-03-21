@@ -4,7 +4,7 @@ import path from 'path';
 
 // List directory contents (GET /api/files?dir=/some/path)
 export async function listDirectory(req, res) {
-	const dir = req.query.dir || '/data/data/com.termux/files/home';
+	const dir = req.query.dir || '/data/data/com.termux/files/home/storage/shared';
 	try {
 		const entries = await fs.readdir(dir, { withFileTypes: true });
 		const files = entries.map((entry) => ({
