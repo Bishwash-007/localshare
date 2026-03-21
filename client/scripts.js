@@ -130,9 +130,25 @@ document.addEventListener('file:delete', async (e) => {
 // Paste (copy or move)
 document.addEventListener('file:paste', async (e) => {
 	const { srcPath, destPath, mode, currentPath } = e.detail;
-	// Not implemented in backend yet
-	FileList.showToast('Copy/Move not implemented', 'info');
-	loadDirectory(currentPath);
+	const endpoint = mode === 'cut' ? '/api/files/move' : '/api/files/copy';
+	const res = await fetch(endpoint, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ src: srcPath, dest: destPath }),
+	});
+	const data = await res.json();
+	if (data.success) {
+		loadDirectory(currentPath);
+		FileList.showToast(
+			`${mode === 'cut' ? 'Moved' : 'Copied'} successfully`,
+			'ok',
+		);
+	} else {
+		FileList.showToast(
+			data.error || `${mode === 'cut' ? 'Move' : 'Copy'} failed`,
+			'err',
+		);
+	}
 });
 
 // Mkdir

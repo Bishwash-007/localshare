@@ -270,15 +270,9 @@ const FileList = (() => {
 				new CustomEvent('navigate', { detail: { path: newPath } }),
 			);
 		} else {
-			// Download file on open
+			// Open preview modal for file
 			const filePath = item.full_path || buildPath(item);
-			const downloadUrl = `/api/files/download?path=${encodeURIComponent(filePath)}`;
-			const a = document.createElement('a');
-			a.href = downloadUrl;
-			a.download = item.name;
-			document.body.appendChild(a);
-			a.click();
-			document.body.removeChild(a);
+			PreviewModal.open({ ...item, path: filePath });
 		}
 	}
 

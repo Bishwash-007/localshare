@@ -1,3 +1,10 @@
+// Storage meter
+router.get('/../storage', filesController.storage);
+// Move file/folder
+router.post('/move', express.json(), filesController.move);
+
+// Copy file/folder
+router.post('/copy', express.json(), filesController.copy);
 import express from 'express';
 import * as filesController from '../controllers/filesController.js';
 import multer from 'multer';

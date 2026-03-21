@@ -1,3 +1,52 @@
+import os from 'os';
+// Storage meter (GET /api/storage)
+export async function storage(req, res) {
+	try {
+		// Use 'df' command for cross-platform disk usage (works in Termux)
+		const { exec } = await import('child_process');
+		exec('df -k /data/data/com.termux/files/home', (err, stdout) => {
+			if (err) return res.status(500).json({ error: err.message });
+			const lines = stdout.trim().split('\n');
+			if (lines.length < 2)
+				return res.status(500).json({ error: 'No disk info' });
+			const parts = lines[1].split(/\s+/);
+			const total = parseInt(parts[1], 10) * 1024;
+			const used = parseInt(parts[2], 10) * 1024;
+			res.json({ total, used });
+		});
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+}
+// Move file or folder (POST /api/files/move)
+export async function move(req, res) {
+	const { src, dest } = req.body;
+	try {
+		await fs.rename(src, dest);
+		res.json({ success: true });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+}
+
+// Copy file or folder (POST /api/files/copy)
+export async function copy(req, res) {
+	const { src, dest } = req.body;
+	try {
+		// Only support file copy for now
+		const stat = await fs.stat(src);
+		if (stat.isDirectory()) {
+			return res
+				.status(400)
+				.json({ error: 'Copying folders is not supported yet.' });
+		}
+		const data = await fs.readFile(src);
+		await fs.writeFile(dest, data);
+		res.json({ success: true });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+}
 // Controller logic for file/folder operations
 import fs from 'fs/promises';
 import path from 'path';

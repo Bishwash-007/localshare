@@ -58,14 +58,14 @@ const PreviewModal = (() => {
 	function renderImage(file) {
 		return `
       <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
-        <img
-          src="/api/download?path=${encodeURIComponent(file.path)}"
-          alt="${file.name}"
-          style="max-width:100%;max-height:60vh;border-radius:8px;border:1px solid var(--ctp-surface1);"
-          onerror="this.src='https://placehold.co/400x300/313244/cdd6f4?text=Preview+unavailable'"
-        />
-        ${renderFileMeta(file)}
-      </div>`;
+				<img
+					src="/api/files/download?path=${encodeURIComponent(file.path)}"
+					alt="${file.name}"
+					style="max-width:100%;max-height:60vh;border-radius:8px;border:1px solid var(--ctp-surface1);"
+					onerror="this.src='https://placehold.co/400x300/313244/cdd6f4?text=Preview+unavailable'"
+				/>
+				${renderFileMeta(file)}
+			</div>`;
 	}
 
 	function renderVideo(file) {
@@ -74,7 +74,7 @@ const PreviewModal = (() => {
         <video
           controls
           style="width:100%;max-height:60vh;border-radius:8px;background:#000;"
-          src="/api/download?path=${encodeURIComponent(file.path)}">
+		  src="/api/files/download?path=${encodeURIComponent(file.path)}">
           Your browser does not support video playback.
         </video>
         ${renderFileMeta(file)}
@@ -85,8 +85,8 @@ const PreviewModal = (() => {
 		return `
       <div style="display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px 0;">
         <i class="ph ph-music-note" style="font-size:5rem;color:var(--ctp-green);"></i>
-        <audio controls style="width:100%;"
-          src="/api/download?path=${encodeURIComponent(file.path)}">
+				<audio controls style="width:100%;"
+					src="/api/files/download?path=${encodeURIComponent(file.path)}">
           Your browser does not support audio playback.
         </audio>
         ${renderFileMeta(file)}
@@ -114,7 +114,7 @@ const PreviewModal = (() => {
 		return `
       <div style="display:flex;flex-direction:column;gap:12px;">
         <iframe
-          src="/api/download?path=${encodeURIComponent(file.path)}"
+		  src="/api/files/download?path=${encodeURIComponent(file.path)}"
           style="width:100%;height:60vh;border:none;border-radius:8px;background:var(--ctp-mantle);"
           title="${file.name}">
         </iframe>
