@@ -5,14 +5,24 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/index.js"
+    "start": "npm run build && npm run dev",
+    "build": "cd vite && npm run build && cd ..",
+    "dev": "nodemon server/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "cors": "^2.8.6",
     "express": "^5.2.1",
-    "multer": "^2.1.1"
+    "ffmpeg-static": "^5.3.0",
+    "file-type": "^21.3.4",
+    "mime-types": "^3.0.2",
+    "multer": "^2.1.1",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }

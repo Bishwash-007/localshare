@@ -1,5 +1,9 @@
 node_modules/
 dist/
 
+.env
+res.json
+start.sh
+
 .DS_Store
 
